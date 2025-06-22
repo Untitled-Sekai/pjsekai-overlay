@@ -207,6 +207,98 @@ if PED_DATA and PED_DATA.version_status == "ok" then
   obj.copybuffer("obj", "tmp")
 end
 ----------------------------------------------------------------
+@コンボ2
+if PED_DATA and PED_DATA.version_status == "ok" then
+  local ap_alpha = (math.sin(obj.time * math.pi) + 1) * (1 / 2)
+  if ap_alpha > 1 then
+    ap_alpha = 1
+  end
+  if PED_DATA.current.combo > 0 then
+    obj.setoption("drawtarget", "tempbuffer", obj.screen_w / 2, 300) -- Adjust Y position
+
+    local combo_str
+    combo_str = tostring(PED_DATA.current.combo)
+
+    local progress = ((obj.frame - OFFSET) - (PED_DATA.current.time * obj.framerate))
+    for i = 1, #combo_str do
+      local digit = combo_str:sub(i, i)
+      local shift = -(#combo_str / 2) + i - 0.5
+      local shift_fax = 0
+
+      if progress > 8 then
+        shift_fax = 1
+      else
+        shift_fax = (progress / 8) * 0.5 + 0.5
+      end
+
+      if PED_DATA.ap then
+        obj.load("image", PED_DATA.path.."/combo/b"..digit..".png")
+      end
+      obj.draw(shift * 75 * shift_fax, 0, 0, 0.70 * shift_fax, ap_alpha)
+    end
+    obj.setoption("blend", 1)
+    if progress < 16 then
+      for i = 1, #combo_str do
+        local digit = combo_str:sub(i, i)
+        local shift = -(#combo_str / 2) + i - 0.5
+        local shift_fax = (progress / 8) * 0.5 + 0.5
+        local alpha = (progress / 16) * -1 + 1
+
+        if PED_DATA.ap then
+          obj.load("image", PED_DATA.path.."/combo/b"..digit..".png")
+        end
+        obj.draw(shift * 75 * shift_fax, 0, 0, 0.70 * shift_fax, alpha * 0.2)
+      end
+    end
+
+    obj.setoption("blend", 0)
+    obj.copybuffer("obj", "tmp")
+  end
+end
+----------------------------------------------------------------
+@コンボ1.5
+if PED_DATA and PED_DATA.version_status == "ok" then
+  local ap_alpha = (math.sin(obj.time * math.pi) + 1) * (1 / 2)
+  if ap_alpha > 1 then
+    ap_alpha = 1
+  end
+  if PED_DATA.current.combo > 0 then
+    obj.setoption("drawtarget", "tempbuffer", obj.screen_w / 2, 250) -- Adjust Y position
+
+    -- Combo string generation
+    local combo_str
+    combo_str = tostring(PED_DATA.current.combo)
+
+    -- Progress calculation
+    local progress = ((obj.frame - OFFSET) - (PED_DATA.current.time * obj.framerate))
+
+    -- Main combo digits drawing loop
+
+    -- Secondary combo digits drawing loop with different alpha
+    obj.setoption("blend", 1)
+    if progress < 16 then
+      for i = 1, #combo_str do
+        local digit = combo_str:sub(i, i)
+        local shift = -(#combo_str / 2) + i - 0.5
+        local shift_fax = (progress / 8) * 0.5 + 0.5
+        local alpha = (progress / 16) * -1 + 1
+
+        if PED_DATA.ap then
+          obj.load("image", PED_DATA.path.."/combo/p"..digit..".png")
+        else
+          obj.load("image", PED_DATA.path.."/combo/n"..digit..".png")
+        end
+        obj.draw(shift * 75 * shift_fax, 0, 0, 0.70 * shift_fax, alpha * 0.6)
+      end
+    end
+
+    -- Finalize drawing and copy to buffer
+    obj.setoption("blend", 0)
+    obj.copybuffer("obj", "tmp")
+  end
+end	
+
+----------------------------------------------------------------
 @コンボ
 if PED_DATA and PED_DATA.version_status == "ok" then
   local ap_alpha = (math.sin(obj.time * math.pi) + 1) * (1 / 2)
@@ -258,7 +350,7 @@ if PED_DATA and PED_DATA.version_status == "ok" then
         local alpha = (progress / 16) * -1 + 1
 
         if PED_DATA.ap then
-          obj.load("image", PED_DATA.path.."/combo/p"..digit..".png")
+          obj.load("image", PED_DATA.path.."/combo/a"..digit..".png")
         else
           obj.load("image", PED_DATA.path.."/combo/n"..digit..".png")
         end
@@ -270,6 +362,7 @@ if PED_DATA and PED_DATA.version_status == "ok" then
     obj.copybuffer("obj", "tmp")
   end
 end
+
 ----------------------------------------------------------------
 @判定
 if PED_DATA and PED_DATA.version_status == "ok" then
@@ -285,3 +378,14 @@ if PED_DATA and PED_DATA.version_status == "ok" then
   end
 end
 -- vim: set ft=lua fenc=cp932:
+
+----------------------------------------------------------------
+@autolive
+
+local ap_alpha = 1 - ((math.sin(obj.time * math.pi) + 1) * 0.5)
+if ap_alpha < 0 then
+  ap_alpha = 0
+end
+
+obj.load("image", PED_DATA.path.."/autolive.png")
+obj.draw(0, 0, 0, 1, ap_alpha)

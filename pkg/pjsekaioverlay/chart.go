@@ -62,6 +62,13 @@ func DetectChartSource(chartId string) (Source, error) {
 			Color: 0x83ccd2,
 			Host:  "cc.sevenc7c.com",
 		}
+	} else if strings.HasPrefix(chartId, "utsk-") {
+		source = Source{
+			Id:    "Untitled Sekai",
+			Name:  "Untitled Sekai",
+			Color: 0x6a6a6a,
+			Host:  "us.pim4n-net.com",
+		}
 	}
 	if source.Id == "" {
 		return Source{

@@ -172,15 +172,13 @@ func CalculateScore(levelInfo sonolus.LevelInfo, levelData sonolus.LevelData, po
 			comboFax = 1.1
 		}
 
-		score += (
-			(float64(power) / weightedNotesCount) * // Team power / weighted notes count
-				4 * // Constant
-				weight * // Note weight
-				1 * // Judge weight (Always 1)
-				levelFax * // Level fax
-				comboFax * // Combo fax
-				1 // Skill fax (Always 1)
-		)
+		score += ((float64(power) / weightedNotesCount) * // Team power / weighted notes count
+			4 *
+			weight *
+			1 *
+			levelFax *
+			comboFax *
+			1)
 		beat, err := getValueFromData(entity.Data, "#BEAT")
 		if err != nil {
 			continue
